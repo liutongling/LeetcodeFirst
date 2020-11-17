@@ -1,0 +1,45 @@
+class Solution:
+    def parent(self,i:int):
+        return int(((i+1)/2) )- 1
+    def left(self,i:int):
+        return 2*(i+1)-1
+    def right(self,i:int):
+        return 2*(i+1)
+    #将数组建立成堆
+    def contrationHeapSort(self,Numbers:list)->list:
+        long = len(Numbers)
+        for i in range(long):
+            if self.parent(i)<0:
+                continue
+            else:
+                temp = self.parent(i)
+                k = i
+                while temp >=0:
+                    if Numbers[temp] < Numbers[k]:
+                        Numbers[temp],Numbers[k] = Numbers[k],Numbers[temp]
+                    k = temp
+                    temp = self.parent(temp)
+        return Numbers
+    def maxify_heap(self,heap:list,size:int):
+        parent = 0
+        while self.left(parent) < size or self.right(parent) < size:
+            max_val = heap[parent]
+            child = parent
+            if self.left(parent)< size and heap[self.left(parent)] > max_val:
+                max_val = heap[self.left(parent)]
+                child = self.left(parent)
+            if self.right(parent)<size and heap[self.right(parent)]> max_val:
+                max_val = heap[self.right(parent)]
+                child = self.right(parent)
+            if child == parent:
+                return
+            heap[parent],heap[child] = heap[child],heap[parent]
+            parent = child
+    def heapSort(self,A:list):
+        A = self.contrationHeapSort(A)
+        size = len(A)
+        while size > 1:
+            A[size-1],A[0] = A[0],A[size-1]
+            size-=1
+            self.maxify_heap(A,size)
+        return A
